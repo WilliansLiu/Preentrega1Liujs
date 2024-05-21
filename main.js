@@ -1,16 +1,16 @@
-const BANCOUSUARIO = []
-let usuarioSaldo = 0
-let userdni = prompt("ingrese dni")
-let usernombre = prompt("ingrese nombre")
-let userapellido = prompt("ingrese apellido")
-agregarDatosdelUsuario(userdni, usernombre, userapellido)
-let saldoDeposito = parseFloat(prompt("Ingrese el monto a depositar"))
-depositarSaldodelUsuario ()
+const bancoUsuario = []
 
 function agregarDatosdelUsuario(dni, nombre, apellido) {
-    let usuariodatos = (dni + "" + nombre + "" + apellido)
-    alert (usuariodatos)
+    let datosUsuario = {
+        dni,
+        nombre,
+        apellido,
+        saldo:0
+    }
+    bancoUsuarios.push(datosUsuario)
+    alert ("Usuario Guardado")
 }
+
 
 
 function depositarSaldodelUsuario() {
@@ -18,11 +18,18 @@ function depositarSaldodelUsuario() {
         alert ("deposite un monto valido")
         saldoDeposito = parseFloat(prompt("ingrese nuevamente el monto a depositar"))
     }
-    return alert (saldoDeposito)
+    for(usuario of bancoUsuarios){
+        if(usuario.dni === dni){
+            usuario.saldo = usuario.saldo + saldoDeposito
+            break
+        }
+    }
+
+
+    
+    return alert ("el saldo total es: " + saldoDeposito)
     
 }
-
-
 
 function retirarSaldodelUsuario() {
 console.log(retirarSaldodelUsuario)
@@ -30,12 +37,37 @@ console.log(retirarSaldodelUsuario)
 }
 
 function consultarSaldodelUsuario(dniConsulta) {
-    const usuario = BANCOUSUARIO.find(user => userdni === dniConsulta);
-    if (usuario){
-        alert( usuarioSaldo);
-    }else{ alert ("No se encuentra el usuario con ese DNI")
-
+    for(usuario of bancoUsuarios){
+        if(usuario.dni === dniConsulta){
+            alert("El saldo del usuario es: " + usuario.saldo)
+            break
         }
-    
-console.log(consultarSaldodelUsuario)}//en proceso todavia 
+    }
 
+
+}
+
+function principal(){
+    let continuar = true
+    while(continuar){
+        let accion = prompt("A: agregar usuario /  D: depositar saldo / V: ver saldo ")
+        if(accion == "A"){
+            let userDni = prompt("ingrese dni")
+            let userNombre = prompt("ingrese nombre")
+            let userApellido = prompt("ingrese apellido")
+
+            agregarDatosdelUsuario(userDni, userNombre, userApellido)
+        }else if(accion == "D"){
+            let userDni = prompt("ingrese dni para el deposito")
+            let saldoDeposito = parseFloat(prompt("Ingrese el monto a depositar"))
+            depositarSaldodelUsuario(userDni,saldoDeposito)
+        }else if(accion == "V"){
+            let userDni = prompt("ingrese dni para consultar su saldo")
+            consultarSaldodelUsuario(userDni)
+        }
+        continuar = confirm("quiere continuar?")
+    }
+}
+
+
+principal()
